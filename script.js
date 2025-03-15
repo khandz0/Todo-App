@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const dueDateInput = document.getElementById("due-date");
     const addTaskButton = document.getElementById("add-task");
     const taskList = document.getElementById("task-list");
+    const clearTasksButton = document.getElementById("clear-tasks");
 
     // Load tasks from localStorage
     loadTasks();
@@ -11,7 +12,12 @@ document.addEventListener("DOMContentLoaded", () => {
     taskInput.addEventListener("keypress", (e) => {
         if (e.key === "Enter") addTask();
     });
-    
+
+    // Fix Clear All Button
+    clearTasksButton.addEventListener("click", () => {
+        localStorage.removeItem("tasks"); // Remove from storage
+        taskList.innerHTML = ""; // Remove from page
+    });
 
     function addTask() {
         const taskText = taskInput.value.trim();
@@ -21,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (taskText === "") return;
     
         const taskItem = document.createElement("li");
-        const currentTime = new Date().toLocaleString(); // Get current date and time
+        const currentTime = new Date().toLocaleString();
     
         taskItem.innerHTML = `
             <div class="task-info">
@@ -35,19 +41,17 @@ document.addEventListener("DOMContentLoaded", () => {
             taskItem.classList.toggle("completed");
             saveTasks();
         });
-    
+
         taskItem.querySelector(".delete-btn").addEventListener("click", () => {
             taskItem.remove();
             saveTasks();
         });
-    
+
         taskList.appendChild(taskItem);
         saveTasks();
         taskInput.value = "";
         dueDateInput.value = ""; // Clear input fields
     }
-    
-    
 
     function saveTasks() {
         let tasks = [];
@@ -63,12 +67,12 @@ document.addEventListener("DOMContentLoaded", () => {
         tasks.sort((a, b) => new Date(a.date || "9999-12-31") - new Date(b.date || "9999-12-31"));
     
         localStorage.setItem("tasks", JSON.stringify(tasks));
-        loadTasks(); // Refresh UI after sorting
-    }
-    
+    }    
 
     function loadTasks() {
         const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        taskList.innerHTML = ""; // Clear the list before reloading
+
         tasks.forEach((task) => {
             const taskItem = document.createElement("li");
 
@@ -95,8 +99,4 @@ document.addEventListener("DOMContentLoaded", () => {
             taskList.appendChild(taskItem);
         });
     }
-});
-document.getElementById("clear-tasks").addEventListener("click", () => {
-    localStorage.removeItem("tasks");
-    taskList.innerHTML = "";
 });
