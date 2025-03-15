@@ -67,15 +67,16 @@ document.addEventListener("DOMContentLoaded", () => {
         tasks.sort((a, b) => new Date(a.date || "9999-12-31") - new Date(b.date || "9999-12-31"));
     
         localStorage.setItem("tasks", JSON.stringify(tasks));
-    }    
+    }
+    
 
     function loadTasks() {
         const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-        taskList.innerHTML = ""; // Clear the list before reloading
-
+        taskList.innerHTML = ""; // ✅ Clear the task list before reloading
+    
         tasks.forEach((task) => {
             const taskItem = document.createElement("li");
-
+    
             taskItem.innerHTML = `
                 <div class="task-info">
                     <span>${task.text}</span>
@@ -83,20 +84,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
                 <button class="delete-btn">X</button>
             `;
-
+    
             if (task.completed) taskItem.classList.add("completed");
-
+    
             taskItem.querySelector(".task-info span").addEventListener("click", () => {
                 taskItem.classList.toggle("completed");
                 saveTasks();
             });
-
+    
             taskItem.querySelector(".delete-btn").addEventListener("click", () => {
                 taskItem.remove();
                 saveTasks();
             });
-
+    
             taskList.appendChild(taskItem);
         });
-    }
+    }    
 });
+document.getElementById("clear-tasks").addEventListener("click", () => {
+    localStorage.removeItem("tasks"); // Remove tasks from storage
+    taskList.innerHTML = ""; // Clear from UI
+});
+
