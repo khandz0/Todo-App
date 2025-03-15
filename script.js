@@ -11,53 +11,61 @@ document.addEventListener("DOMContentLoaded", () => {
     taskInput.addEventListener("keypress", (e) => {
         if (e.key === "Enter") addTask();
     });
+    
 
     function addTask() {
         const taskText = taskInput.value.trim();
         const dueDate = dueDateInput.value;
-
+        const category = document.getElementById("task-category").value;
+    
         if (taskText === "") return;
-
+    
         const taskItem = document.createElement("li");
         const currentTime = new Date().toLocaleString(); // Get current date and time
-
+    
         taskItem.innerHTML = `
             <div class="task-info">
-                <span>${taskText}</span>
+                <span>${taskText} <small>(${category})</small></span>
                 <span class="task-date">Due: ${dueDate || "No due date"} | Added: ${currentTime}</span>
             </div>
             <button class="delete-btn">X</button>
         `;
-
-        // Mark task as completed when clicked
+    
         taskItem.querySelector(".task-info span").addEventListener("click", () => {
             taskItem.classList.toggle("completed");
             saveTasks();
         });
-
-        // Delete task when button is clicked
+    
         taskItem.querySelector(".delete-btn").addEventListener("click", () => {
             taskItem.remove();
             saveTasks();
         });
-
+    
         taskList.appendChild(taskItem);
         saveTasks();
         taskInput.value = "";
-        dueDateInput.value = ""; // Clear input fields after adding
+        dueDateInput.value = ""; // Clear input fields
     }
+    
+    
 
     function saveTasks() {
-        const tasks = [];
+        let tasks = [];
         document.querySelectorAll("#task-list li").forEach((li) => {
-            const taskText = li.querySelector(".task-info span").innerText;
-            const taskDate = li.querySelector(".task-date").innerText;
-            const isCompleted = li.classList.contains("completed");
-
+            let taskText = li.querySelector(".task-info span").innerText;
+            let taskDate = li.querySelector(".task-date").innerText.replace("Due: ", "");
+            let isCompleted = li.classList.contains("completed");
+    
             tasks.push({ text: taskText, date: taskDate, completed: isCompleted });
         });
+    
+        // Sort tasks by due date (earliest first)
+        tasks.sort((a, b) => new Date(a.date || "9999-12-31") - new Date(b.date || "9999-12-31"));
+    
         localStorage.setItem("tasks", JSON.stringify(tasks));
+        loadTasks(); // Refresh UI after sorting
     }
+    
 
     function loadTasks() {
         const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
@@ -87,4 +95,8 @@ document.addEventListener("DOMContentLoaded", () => {
             taskList.appendChild(taskItem);
         });
     }
+});
+document.getElementById("clear-tasks").addEventListener("click", () => {
+    localStorage.removeItem("tasks");
+    taskList.innerHTML = "";
 });
