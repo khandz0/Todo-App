@@ -23,6 +23,7 @@ h1 {
     color: white;
 }
 
+/* Contact Section */
 .contact-section {
     display: flex;
     gap: 15px;
@@ -31,16 +32,16 @@ h1 {
 .contact-section a {
     color: white;
     text-decoration: none;
-    font-size: 14px;
-    transition: color 0.3s ease-in-out;
+    font-size: 16px;
+    transition: transform 0.3s, color 0.3s;
 }
 
 .contact-section a:hover {
-    text-decoration: underline;
-    color: #003300; /* Dark Green Hover */
+    color: #003300;
+    transform: scale(1.1);
 }
 
-/* Kanban Board Layout */
+/* TKK Board Layout */
 .board {
     display: flex;
     justify-content: center;
@@ -57,10 +58,8 @@ h1 {
     border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease-in-out;
-}
-
-.column:hover {
-    transform: scale(1.05); /* Slight zoom effect */
+    display: flex;
+    flex-direction: column;
 }
 
 /* Column Titles */
@@ -71,9 +70,12 @@ h2 {
     color: #003300;
 }
 
-/* Task List */
+/* Task List (Now Scrollable) */
 .task-list {
+    flex-grow: 1;
     min-height: 300px;
+    max-height: 400px; /* Prevents expansion */
+    overflow-y: auto; /* Adds scroll when full */
     padding: 10px;
     background: #CDECC5; /* Soft Green */
     border-radius: 6px;
@@ -87,7 +89,9 @@ h2 {
     margin: 5px;
     border-radius: 5px;
     cursor: grab;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     transition: background 0.3s, transform 0.2s;
 }
 
@@ -96,42 +100,53 @@ h2 {
     transform: translateY(-2px);
 }
 
-/* Task Input & Button */
-.task-input {
-    display: flex;
-    margin-top: 10px;
-}
-
-.task-input input {
-    flex: 1;
-    padding: 8px;
-    border: none;
-    border-radius: 5px;
-}
-
-.task-input button {
-    padding: 8px;
-    background: #4F8F5A; /* Dark Green */
-    color: white;
+/* Delete Button */
+.delete-btn {
+    background: transparent;
     border: none;
     cursor: pointer;
-    transition: background 0.3s ease-in-out;
+    font-size: 16px;
+    color: red;
+    transition: color 0.3s ease-in-out;
 }
 
-.task-input button:hover {
-    background: #006400; /* Darkest Green */
+.delete-btn:hover {
+    color: darkred;
+    transform: scale(1.2);
+}
+/* Task Input Box at the Top */
+.task-input-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 20px auto;
+    padding: 10px;
+    background: #88C999;
+    border-radius: 8px;
+    width: 60%;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Hover Effect for Tasks */
-.task::before {
-    content: "";
-    display: block;
-    height: 3px;
-    width: 0%;
-    background: #006400;
-    transition: width 0.3s ease-in-out;
+.task-input-container input {
+    width: 70%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
 }
 
-.task:hover::before {
-    width: 100%;
+.task-input-container button {
+    background-color: #5A9F6E;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.task-input-container button:hover {
+    background-color: #3E7A55;
 }

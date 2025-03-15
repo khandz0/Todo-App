@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function addTask(columnId) {
-    const inputField = document.getElementById(`new-task-${columnId}`);
+    const inputField = document.getElementById(`new-task-todo`);
     if (!inputField) return;
 
     const taskText = inputField.value.trim();
@@ -12,6 +12,8 @@ function addTask(columnId) {
     createTaskElement(taskText, columnId);
     saveTasks();
     inputField.value = "";
+
+    updateScrollbars(); // Ensure scrolling updates
 }
 
 function createTaskElement(text, columnId) {
@@ -87,4 +89,10 @@ function removeTask(text, columnId) {
     });
 
     saveTasks();
+}
+
+function updateScrollbars() {
+    document.querySelectorAll(".task-list").forEach(list => {
+        list.style.overflowY = list.scrollHeight > 400 ? "auto" : "hidden";
+    });
 }
