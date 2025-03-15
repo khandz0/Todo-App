@@ -3,25 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do List</title>
+    <title>Kanban To-Do App</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="todo-container">
-        <h1>To-Do List</h1>
-        <div class="todo-input">
-            <input type="text" id="task-input" placeholder="Add a new task...">
-            <input type="date" id="due-date">
-            <select id="task-category">
-                <option value="Work">Work</option>
-                <option value="School">School</option>
-                <option value="Personal">Personal</option>
-            </select>
-            <button id="add-task">Add</button>
+    <header>
+        <h1>Kanban To-Do List</h1>
+        <div class="contact-section">
+            <a href="mailto:kieuth24@gmail.com">📧 Email</a>
+            <a href="https://www.linkedin.com/in/thienkhangkieu2">🔗 LinkedIn</a>
+            <a href="https://github.com/khandz0">💻 GitHub</a>
         </div>
-        <ul id="task-list"></ul>
-        <button id="clear-tasks">Clear All</button>
+    </header>
+
+    <div class="board">
+        <div class="column" id="todo">
+            <h2>To Do</h2>
+            <div class="task-list" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+            <div class="task-input">
+                <input type="text" id="new-task-todo" placeholder="Add a task">
+                <button onclick="addTask('todo')">+</button>
+            </div>
+        </div>
+
+        <div class="column" id="doing">
+            <h2>Doing</h2>
+            <div class="task-list" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+        </div>
+
+        <div class="column" id="done">
+            <h2>Done</h2>
+            <div class="task-list" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+        </div>
     </div>
 
     <script src="script.js"></script>

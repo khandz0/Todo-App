@@ -1,108 +1,90 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const taskInput = document.getElementById("task-input");
-    const dueDateInput = document.getElementById("due-date");
-    const addTaskButton = document.getElementById("add-task");
-    const taskList = document.getElementById("task-list");
-    const clearTasksButton = document.getElementById("clear-tasks");
-
-    // Load tasks from localStorage
     loadTasks();
+});
 
-    addTaskButton.addEventListener("click", addTask);
-    taskInput.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") addTask();
-    });
+function addTask(columnId) {
+    const inputField = document.getElementById(`new-task-${columnId}`);
+    if (!inputField) return;
 
-    // Fix Clear All Button
-    clearTasksButton.addEventListener("click", () => {
-        localStorage.removeItem("tasks"); // Remove from storage
-        taskList.innerHTML = ""; // Remove from page
-    });
+    const taskText = inputField.value.trim();
+    if (taskText === "") return;
 
-    function addTask() {
-        const taskText = taskInput.value.trim();
-        const dueDate = dueDateInput.value;
-        const category = document.getElementById("task-category").value;
-    
-        if (taskText === "") return;
-    
-        const taskItem = document.createElement("li");
-        const currentTime = new Date().toLocaleString();
-    
-        taskItem.innerHTML = `
-            <div class="task-info">
-                <span>${taskText} <small>(${category})</small></span>
-                <span class="task-date">Due: ${dueDate || "No due date"} | Added: ${currentTime}</span>
-            </div>
-            <button class="delete-btn">X</button>
-        `;
-    
-        taskItem.querySelector(".task-info span").addEventListener("click", () => {
-            taskItem.classList.toggle("completed");
-            saveTasks();
-        });
+    createTaskElement(taskText, columnId);
+    saveTasks();
+    inputField.value = "";
+}
 
-        taskItem.querySelector(".delete-btn").addEventListener("click", () => {
-            taskItem.remove();
-            saveTasks();
-        });
+function createTaskElement(text, columnId) {
+    const taskList = document.querySelector(`#${columnId} .task-list`);
+    const taskItem = document.createElement("div");
 
-        taskList.appendChild(taskItem);
+    taskItem.classList.add("task");
+    taskItem.draggable = true;
+    taskItem.textContent = text;
+    taskItem.addEventListener("dragstart", drag);
+
+    taskList.appendChild(taskItem);
+    saveTasks();
+}
+
+/* Drag & Drop Functionality */
+function allowDrop(event) {
+    event.preventDefault();
+}
+
+function drag(event) {
+    event.dataTransfer.setData("text", event.target.textContent);
+    event.dataTransfer.setData("column", event.target.parentElement.parentElement.id);
+}
+
+function drop(event) {
+    event.preventDefault();
+    const taskText = event.dataTransfer.getData("text");
+    const fromColumn = event.dataTransfer.getData("column");
+    const toColumn = event.target.closest(".column").id;
+
+    if (fromColumn !== toColumn) {
+        createTaskElement(taskText, toColumn);
+        removeTask(taskText, fromColumn);
         saveTasks();
-        taskInput.value = "";
-        dueDateInput.value = ""; // Clear input fields
     }
+}
 
-    function saveTasks() {
-        let tasks = [];
-        document.querySelectorAll("#task-list li").forEach((li) => {
-            let taskText = li.querySelector(".task-info span").innerText;
-            let taskDate = li.querySelector(".task-date").innerText.replace("Due: ", "");
-            let isCompleted = li.classList.contains("completed");
-    
-            tasks.push({ text: taskText, date: taskDate, completed: isCompleted });
+/* Save & Load Tasks */
+function saveTasks() {
+    const tasks = { todo: [], doing: [], done: [] };
+
+    document.querySelectorAll(".column").forEach((col) => {
+        const colId = col.id;
+        const taskItems = col.querySelectorAll(".task");
+
+        taskItems.forEach((task) => {
+            tasks[colId].push(task.textContent);
         });
-    
-        // Sort tasks by due date (earliest first)
-        tasks.sort((a, b) => new Date(a.date || "9999-12-31") - new Date(b.date || "9999-12-31"));
-    
-        localStorage.setItem("tasks", JSON.stringify(tasks));
-    }
-    
+    });
 
-    function loadTasks() {
-        const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-        taskList.innerHTML = ""; // ✅ Clear the task list before reloading
-    
-        tasks.forEach((task) => {
-            const taskItem = document.createElement("li");
-    
-            taskItem.innerHTML = `
-                <div class="task-info">
-                    <span>${task.text}</span>
-                    <span class="task-date">${task.date}</span>
-                </div>
-                <button class="delete-btn">X</button>
-            `;
-    
-            if (task.completed) taskItem.classList.add("completed");
-    
-            taskItem.querySelector(".task-info span").addEventListener("click", () => {
-                taskItem.classList.toggle("completed");
-                saveTasks();
-            });
-    
-            taskItem.querySelector(".delete-btn").addEventListener("click", () => {
-                taskItem.remove();
-                saveTasks();
-            });
-    
-            taskList.appendChild(taskItem);
+    localStorage.setItem("kanbanTasks", JSON.stringify(tasks));
+}
+
+function loadTasks() {
+    const savedTasks = JSON.parse(localStorage.getItem("kanbanTasks")) || { todo: [], doing: [], done: [] };
+
+    Object.keys(savedTasks).forEach((columnId) => {
+        savedTasks[columnId].forEach((taskText) => {
+            createTaskElement(taskText, columnId);
         });
-    }    
-});
-document.getElementById("clear-tasks").addEventListener("click", () => {
-    localStorage.removeItem("tasks"); // Remove tasks from storage
-    taskList.innerHTML = ""; // Clear from UI
-});
+    });
+}
 
+function removeTask(text, columnId) {
+    const column = document.querySelector(`#${columnId} .task-list`);
+    const tasks = column.querySelectorAll(".task");
+
+    tasks.forEach((task) => {
+        if (task.textContent === text) {
+            task.remove();
+        }
+    });
+
+    saveTasks();
+}
