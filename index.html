@@ -9,7 +9,7 @@
 <body>
 
     <header>
-        <h1>TKK To-Do List</h1>
+        <h1 id="animated-title">To-Do List</h1>
         <div class="contact-section">
             <a href="mailto:kieuth24@gmail.com">📧 Email</a>
             <a href="https://www.linkedin.com/in/thienkhangkieu2606">🔗 LinkedIn</a>
@@ -26,10 +26,6 @@
         <div class="column" id="todo">
             <h2>To Do</h2>
             <div class="task-list" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-            <div class="task-input">
-                <input type="text" id="new-task-todo" placeholder="Add a task">
-                <button onclick="addTask('todo')">+</button>
-            </div>
         </div>
 
         <div class="column" id="doing">

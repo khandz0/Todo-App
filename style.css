@@ -7,39 +7,65 @@ body {
     margin: 0;
     padding: 0;
 }
+@keyframes headerBG {
+    0% { background: #5A9F6E; }
+    50% { background: #6CBF82; }
+    100% { background: #5A9F6E; }
+}
+
+header {
+    animation: headerBG 6s infinite alternate;
+}
+
 
 /* Header & Contact Section */
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px;
-    background: #5A9F6E; /* Darker Green Header */
+    padding: 15px 50px;
+    background: #5A9F6E;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(-10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+#animated-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: white;
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+
 h1 {
-    font-size: 24px;
+    font-size: 28px;
+    font-weight: bold;
     color: white;
 }
 
 /* Contact Section */
 .contact-section {
     display: flex;
-    gap: 15px;
+    gap: 20px;
 }
-
 .contact-section a {
-    color: white;
-    text-decoration: none;
-    font-size: 16px;
-    transition: transform 0.3s, color 0.3s;
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    gap: 8px;
+    padding: 5px;
+    transition: all 0.3s ease-in-out;
 }
 
 .contact-section a:hover {
-    color: #003300;
     transform: scale(1.1);
+    text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.8);
 }
+
 
 /* TKK Board Layout */
 .board {
@@ -100,20 +126,6 @@ h2 {
     transform: translateY(-2px);
 }
 
-/* Delete Button */
-.delete-btn {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    color: red;
-    transition: color 0.3s ease-in-out;
-}
-
-.delete-btn:hover {
-    color: darkred;
-    transform: scale(1.2);
-}
 /* Task Input Box at the Top */
 .task-input-container {
     display: flex;
@@ -129,7 +141,7 @@ h2 {
 }
 
 .task-input-container input {
-    width: 70%;
+    width: 90%;
     padding: 10px;
     border: none;
     border-radius: 5px;
