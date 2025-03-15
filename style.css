@@ -167,7 +167,7 @@ h2 {
     font-size: 16px;
 }
 
-.task-input-container button {
+#add-task-btn {
     background-color: #5A9F6E;
     color: white;
     border: none;
@@ -178,6 +178,22 @@ h2 {
     transition: 0.3s;
 }
 
-.task-input-container button:hover {
+#add-task-btn:hover {
     background-color: #3E7A55;
 }
+
+#clear-all-btn {
+    background-color: #d9534f; /* Red Color */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+#clear-all-btn:hover {
+    background-color: #c9302c;
+}
+

@@ -21,8 +21,10 @@
     </header>
     <div class="task-input-container">
         <input type="text" id="new-task-todo" placeholder="Add a task">
-        <button onclick="addTask('todo')">+</button>
-    </div>    
+        <button id="add-task-btn" onclick="addTask('todo')">+</button>
+        <button id="clear-all-btn" onclick="clearAllTasks()">🗑️</button> <!-- New Delete All Button -->
+    </div>
+       
 
     <div class="board">
         <div class="column" id="todo">

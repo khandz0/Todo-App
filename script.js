@@ -96,3 +96,11 @@ function updateScrollbars() {
         list.style.overflowY = list.scrollHeight > 400 ? "auto" : "hidden";
     });
 }
+
+function clearAllTasks() {
+    document.querySelectorAll(".task-list").forEach(list => {
+        list.innerHTML = ""; // Remove all tasks
+    });
+
+    localStorage.removeItem("kanbanTasks"); // Clear stored tasks
+}
