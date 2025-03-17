@@ -68,7 +68,16 @@ h1:hover {
     margin-right: 10px; /* Space between icon and text */
     vertical-align: middle;
 }
-
+.edit-task-input {
+    font-size: 16px;
+    padding: 5px;
+    border: 2px solid #6096BA; /* Blue border */
+    border-radius: 4px;
+    width: 90%;
+    background-color: white;
+    color: #313E50;
+    outline: none;
+}
 
 /* Contact Section */
 .contact-section {
