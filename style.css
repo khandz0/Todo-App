@@ -10,9 +10,9 @@ body {
     padding: 0;
 }
 @keyframes headerBG {
-    0% { background: #5A9F6E; }
-    50% { background: #6CBF82; }
-    100% { background: #5A9F6E; }
+    0% { background: #7fc5f4; }
+    50% { background: #81c8f7; }
+    100% { background: #6096BA; }
 }
 
 header {
@@ -27,7 +27,7 @@ header {
     align-items: center;
     padding: 15px 30px;
     /*background: #5A9F6E;*/
-    background: #6096BA; /* Primary Blue */
+    /* Primary Blue */
     color: white;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     height: 35px;
@@ -128,7 +128,7 @@ h2 {
     max-height: 400px; /* Prevents expansion */
     overflow-y: auto; /* Adds scroll when full */
     padding: 10px;
-    background: #CDECC5; /* Soft Green */
+    background: #b8dffb; /* Soft Green */
     border-radius: 6px;
 }
 .task {
@@ -183,7 +183,7 @@ h2 {
     margin: 20px auto;
     padding: 10px;
     /*background: #88C999;*/
-    background: #6096BA;
+    background: #b8dffb;
     border-radius: 8px;
     width: 80%; /* Adjust width dynamically */
     max-width: 500px; /* Set a maximum width */
