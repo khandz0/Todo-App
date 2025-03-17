@@ -9,7 +9,6 @@ A simple and intuitive **drag-and-drop To-Do List** web application designed for
 ✔ **Drag & Drop** - Move tasks between columns for better workflow.  
 ✔ **Save Progress** - Tasks persist even after refreshing the page.  
 ✔ **Clear All Tasks** - Quickly delete all tasks with a single button.  
-✔ **Responsive Design** - Works smoothly on desktop and mobile.  
 ✔ **Attractive Theme** - Modern UI with a color palette: `#6096BA, #FADF63, #F6F8FF, #313E50, #50514F`.
 
 ## 🎨 UI Theme
