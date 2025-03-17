@@ -165,6 +165,13 @@ h2 {
     border: 2px dashed #50514F; /* Gray */
     transition: background 0.3s ease-in-out, border 0.3s ease-in-out;
 }
+/* Task item being dragged */
+.task.dragging {
+    opacity: 0.5;
+    transform: scale(1.05);
+    transition: transform 0.2s ease-in-out;
+}
+
 
 .task:hover {
     /*background: #F0FDF0; /* Lightest Green */

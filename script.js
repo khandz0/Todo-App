@@ -21,42 +21,48 @@ function createTaskElement(text, columnId, isCompleted = false) {
     const taskItem = document.createElement("div");
     taskItem.classList.add("task");
     taskItem.draggable = true;
+    taskItem.dataset.taskText = text; // Store task text as a dataset attribute
 
     // Create checkbox
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
-    checkbox.checked = isCompleted; // Mark as completed if true
+    checkbox.checked = isCompleted;
     checkbox.classList.add("task-checkbox");
 
-    // Task Text
+    // Task Text (Editable)
     const taskText = document.createElement("span");
     taskText.textContent = text;
     if (isCompleted) {
-        taskText.style.textDecoration = "line-through"; // Strike-through if completed
+        taskText.style.textDecoration = "line-through";
     }
+
+    // Drag & Drop Events
+    taskItem.addEventListener("dragstart", (event) => {
+        event.dataTransfer.setData("text/plain", taskItem.dataset.taskText);
+        event.dataTransfer.setData("columnId", columnId);
+        taskItem.classList.add("dragging");
+    });
+
+    taskItem.addEventListener("dragend", () => {
+        taskItem.classList.remove("dragging");
+    });
 
     // Create delete button (🗑)
     const deleteButton = document.createElement("button");
     deleteButton.innerHTML = "🗑";
     deleteButton.classList.add("delete-task-btn");
 
-    // Remove task when delete button is clicked
     deleteButton.addEventListener("click", () => {
-        taskItem.remove(); // Remove from UI
-        removeTask(text, columnId); // Remove from storage
-        saveTasks(); // Save changes
+        taskItem.remove();
+        removeTask(text, columnId);
+        saveTasks();
     });
 
-    // Mark task as complete on checkbox change
     checkbox.addEventListener("change", () => {
         taskText.style.textDecoration = checkbox.checked ? "line-through" : "none";
         saveTasks();
     });
 
-    // Add drag event
-    taskItem.addEventListener("dragstart", drag);
-
-    // Append elements
     taskItem.appendChild(checkbox);
     taskItem.appendChild(taskText);
     taskItem.appendChild(deleteButton);
@@ -67,50 +73,34 @@ function createTaskElement(text, columnId, isCompleted = false) {
 
 
 
+
 /* Drag & Drop Functionality */
-function allowDrop(event) {
-    event.preventDefault();
-    const column = event.target.closest(".column");
-    if (column) {
-        column.classList.add("drag-over"); // Add highlight class
-    }
-}
+document.querySelectorAll(".column").forEach((column) => {
+    column.addEventListener("dragover", (event) => {
+        event.preventDefault();
+        column.classList.add("drag-over");
+    });
 
+    column.addEventListener("dragleave", () => {
+        column.classList.remove("drag-over");
+    });
 
-function drag(event) {
-    const taskElement = event.target;
-    const taskText = taskElement.querySelector("span").textContent;
-    const isChecked = taskElement.querySelector(".task-checkbox").checked; // Get checkbox state
+    column.addEventListener("drop", (event) => {
+        event.preventDefault();
+        column.classList.remove("drag-over");
 
-    event.dataTransfer.setData("text", taskText);
-    event.dataTransfer.setData("completed", isChecked); // Store checkbox state
-    event.dataTransfer.setData("column", taskElement.parentElement.parentElement.id);
-}
+        const taskText = event.dataTransfer.getData("text/plain");
+        const fromColumn = event.dataTransfer.getData("columnId");
+        const toColumn = column.id;
 
-
-function drop(event) {
-    event.preventDefault();
-    const taskText = event.dataTransfer.getData("text");
-    const fromColumn = event.dataTransfer.getData("column");
-    const isCompleted = event.dataTransfer.getData("completed") === "true"; // Convert string to boolean
-    const toColumn = event.target.closest(".column");
-
-    if (toColumn) {
-        toColumn.classList.remove("drag-over"); // Remove highlight
-        if (fromColumn !== toColumn.id) {
-            createTaskElement(taskText, toColumn.id, isCompleted); // Pass completed status
+        if (fromColumn !== toColumn) {
             removeTask(taskText, fromColumn);
+            createTaskElement(taskText, toColumn);
             saveTasks();
         }
-    }
-}
+    });
+});
 
-function dragLeave(event) {
-    const column = event.target.closest(".column");
-    if (column) {
-        column.classList.remove("drag-over");
-    }
-}
 
 
 /* Save & Load Tasks */
